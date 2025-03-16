@@ -11,8 +11,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # 安全设置
 SECRET_KEY = 'django-insecure-your-secret-key'  # 生产环境建议使用环境变量存储密钥
 
-# 生产环境关闭调试模式
-DEBUG = False
+# 开发环境开启调试模式
+DEBUG = True
 
 # 添加PythonAnywhere域名（替换为你的实际用户名）
 ALLOWED_HOSTS = ['*']
@@ -93,10 +93,12 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-# 静态文件 - PythonAnywhere配置
+# 静态文件 - 本地开发配置
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static_collected')
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),  # 修改为正确的静态文件目录
+]
 
 # 媒体文件 - PythonAnywhere配置
 MEDIA_URL = '/media/'

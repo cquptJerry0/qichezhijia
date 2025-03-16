@@ -11,7 +11,10 @@
     {% for car in cars %}
     <div class="col-md-4 mb-4">
         <div class="card h-100">
-            <img src="{% static car.image %}" class="card-img-top" alt="{{ car.brand }} {{ car.model }}">
+            <!-- 图片容器 -->
+            <div class="card-img-wrapper">
+                <img src="{{ car.image_url }}" class="card-img-top" alt="{{ car.brand }} {{ car.model }}">
+            </div>
             <div class="card-body">
                 <h5 class="card-title">{{ car.brand }} {{ car.model }}</h5>
                 <p class="card-text">价格: ¥{{ car.price }}</p>

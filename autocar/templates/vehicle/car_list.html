@@ -26,7 +26,7 @@
             </div>
             <!-- 图片容器 -->
             <div class="card-img-wrapper">
-                <img src="{% static car.image %}" class="card-img-top" alt="{{ car.brand }} {{ car.model }}" loading="lazy">
+                <img src="{{ car.image_url }}" class="card-img-top" alt="{{ car.brand }} {{ car.model }}" loading="lazy">
             </div>
             <div class="card-body">
                 <h5 class="card-title">{{ car.brand }} {{ car.model }}</h5>

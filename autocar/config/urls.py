@@ -24,4 +24,4 @@ handler500 = 'autocar.apps.static_pages.views.error_500'
 # 开发环境下的媒体文件和静态文件服务
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) 
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0]) 
