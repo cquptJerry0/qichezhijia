@@ -1,0 +1,379 @@
+{% extends 'base.html' %}
+
+{% block title %}首页 - 汽车之屋{% endblock %}
+
+{% block content %}
+<!-- 轮播图 - 限制宽度包装 -->
+<div class="max-width-content">
+    <div class="carousel-container">
+        <!-- 轮播指示器 -->
+        <div class="carousel-indicators">
+            <span class="indicator active" data-index="0"></span>
+            <span class="indicator" data-index="1"></span>
+            <span class="indicator" data-index="2"></span>
+        </div>
+
+        <!-- 轮播内容 -->
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <a href="{% url 'vehicle:car_detail' 'mercedes-benz-c-class-2024' %}" class="carousel-link">
+                    <img src="/static/images/vehicles/benchiC.jpg" alt="奔驰C级">
+                </a>
+                <div class="carousel-caption">
+                    <h3>奔驰C级</h3>
+                    <p>豪华舒适的驾乘体验</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <a href="{% url 'vehicle:car_detail' 'bmw-3-series-2024' %}" class="carousel-link">
+                    <img src="/static/images/vehicles/baoma3.jpg" alt="宝马3系">
+                </a>
+                <div class="carousel-caption">
+                    <h3>宝马3系</h3>
+                    <p>运动与豪华的完美结合</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <a href="{% url 'vehicle:car_detail' 'audi-a4l-2024' %}" class="carousel-link">
+                    <img src="/static/images/vehicles/aodia4.jpg" alt="奥迪A4L">
+                </a>
+                <div class="carousel-caption">
+                    <h3>奥迪A4L</h3>
+                    <p>科技与品质的代表</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 轮播控制按钮 -->
+        <button class="carousel-control prev" aria-label="上一张">&#10094;</button>
+        <button class="carousel-control next" aria-label="下一张">&#10095;</button>
+    </div>
+</div>
+
+<!-- 欢迎信息 -->
+<div class="jumbotron my-4 p-5 bg-light rounded">
+    <h1 class="display-4">欢迎来到汽车之屋</h1>
+    <p class="lead">我们提供最全面、最专业的汽车信息服务，帮助您做出明智的购车决策。</p>
+    <hr class="my-4">
+    <p>浏览我们的车辆列表，了解最新的汽车信息。</p>
+    <a class="btn btn-primary btn-lg" href="{% url 'vehicle:car_list' %}" role="button">查看车辆</a>
+</div>
+
+<!-- 特色车辆 -->
+<h2 class="mb-4">特色车辆</h2>
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <img src="/static/images/vehicles/tesla3.jpg" class="card-img-top" alt="特斯拉Model 3">
+            <div class="card-body">
+                <h5 class="card-title">特斯拉 Model 3</h5>
+                <p class="card-text">电动汽车的代表作，科技感十足。</p>
+                <a href="{% url 'vehicle:car_detail' 'tesla-model-3-2024' %}" class="btn btn-primary">查看详情</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <img src="/static/images/vehicles/bydhan.jpg" class="card-img-top" alt="比亚迪汉">
+            <div class="card-body">
+                <h5 class="card-title">比亚迪 汉</h5>
+                <p class="card-text">中国品牌的骄傲，豪华与科技的结合。</p>
+                <a href="{% url 'vehicle:car_detail' 'byd-han-2024' %}" class="btn btn-primary">查看详情</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <img src="/static/images/vehicles/lixiangL9.jpg" class="card-img-top" alt="理想L9">
+            <div class="card-body">
+                <h5 class="card-title">理想 L9</h5>
+                <p class="card-text">豪华大型SUV，家庭出行的首选。</p>
+                <a href="{% url 'vehicle:car_detail' 'li-auto-l9-2024' %}" class="btn btn-primary">查看详情</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+   
+    /* 轮播图样式 */
+    .carousel-container {
+        position: relative;
+        width: 100%;
+        max-width: var(--max-content-width);
+        height: 500px;
+        overflow: hidden;
+        border-radius: var(--border-radius);
+        margin-bottom: 2rem;
+        margin: 0 auto 2rem;
+    }
+    
+    .carousel-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+    
+    .carousel-item {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 0.6s ease-in-out;
+        background-color: #000;
+    }
+    
+    .carousel-item.active {
+        opacity: 1;
+    }
+    
+    .carousel-link {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+    
+    .carousel-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+    
+    .carousel-caption {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 1.5rem;
+        background: rgba(0, 0, 0, 0.6);
+        color: white;
+        text-align: center;
+    }
+    
+    .carousel-caption h3 {
+        font-size: 2rem;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+    
+    .carousel-caption p {
+        font-size: 1.2rem;
+        margin-bottom: 0;
+    }
+    
+    /* 控制按钮样式 */
+    .carousel-control {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 40px;
+        height: 40px;
+        background: rgba(0, 0, 0, 0.5);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        font-size: 18px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        opacity: 0.7;
+        transition: opacity 0.3s;
+        z-index: 10;
+    }
+    
+    .carousel-control:hover {
+        opacity: 1;
+    }
+    
+    .carousel-control.prev {
+        left: 10px;
+    }
+    
+    .carousel-control.next {
+        right: 10px;
+    }
+    
+    /* 轮播指示器样式 */
+    .carousel-indicators {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 10px;
+        z-index: 10;
+    }
+    
+    .indicator {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.5);
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    
+    .indicator.active {
+        background: white;
+    }
+    
+    /* 响应式样式 */
+    @media (max-width: 768px) {
+        .carousel-container {
+            height: 400px;
+        }
+        
+        .carousel-caption h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .carousel-caption p {
+            font-size: 1rem;
+            margin-bottom: 0;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .carousel-container {
+            height: 300px;
+        }
+        
+        .carousel-caption {
+            padding: 1rem;
+        }
+        
+        .carousel-caption h3 {
+            font-size: 1.2rem;
+        }
+        
+        .carousel-caption p {
+            font-size: 0.9rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // 获取轮播元素
+        const carousel = document.querySelector('.carousel-container');
+        const items = carousel.querySelectorAll('.carousel-item');
+        const indicators = carousel.querySelectorAll('.indicator');
+        const prevBtn = carousel.querySelector('.prev');
+        const nextBtn = carousel.querySelector('.next');
+        
+        let currentIndex = 0;
+        let interval = null;
+        const intervalTime = 5000; // 5秒切换一次
+        
+        // 切换到指定轮播项
+        function goToSlide(index) {
+            // 移除所有active类
+            items.forEach(item => item.classList.remove('active'));
+            indicators.forEach(indicator => indicator.classList.remove('active'));
+            
+            // 处理索引边界
+            if (index < 0) {
+                currentIndex = items.length - 1;
+            } else if (index >= items.length) {
+                currentIndex = 0;
+            } else {
+                currentIndex = index;
+            }
+            
+            // 激活当前轮播项和指示器
+            items[currentIndex].classList.add('active');
+            indicators[currentIndex].classList.add('active');
+        }
+        
+        // 下一张
+        function nextSlide() {
+            goToSlide(currentIndex + 1);
+        }
+        
+        // 上一张
+        function prevSlide() {
+            goToSlide(currentIndex - 1);
+        }
+        
+        // 开始自动轮播
+        function startAutoSlide() {
+            if (interval) {
+                clearInterval(interval);
+            }
+            interval = setInterval(nextSlide, intervalTime);
+        }
+        
+        // 停止自动轮播
+        function stopAutoSlide() {
+            if (interval) {
+                clearInterval(interval);
+                interval = null;
+            }
+        }
+        
+        // 绑定按钮事件
+        prevBtn.addEventListener('click', function() {
+            prevSlide();
+            stopAutoSlide();
+            startAutoSlide(); // 点击后重新开始计时
+        });
+        
+        nextBtn.addEventListener('click', function() {
+            nextSlide();
+            stopAutoSlide();
+            startAutoSlide(); // 点击后重新开始计时
+        });
+        
+        // 绑定指示器点击事件
+        indicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', function() {
+                goToSlide(index);
+                stopAutoSlide();
+                startAutoSlide(); // 点击后重新开始计时
+            });
+        });
+        
+        // 鼠标悬停时暂停轮播
+        carousel.addEventListener('mouseenter', stopAutoSlide);
+        carousel.addEventListener('mouseleave', startAutoSlide);
+        
+        // 触摸事件处理（移动端）
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        carousel.addEventListener('touchstart', function(e) {
+            touchStartX = e.changedTouches[0].screenX;
+            stopAutoSlide();
+        }, {passive: true});
+        
+        carousel.addEventListener('touchend', function(e) {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+            startAutoSlide();
+        }, {passive: true});
+        
+        function handleSwipe() {
+            const threshold = 50; // 最小滑动距离
+            if (touchEndX - touchStartX > threshold) {
+                // 右滑，显示上一张
+                prevSlide();
+            } else if (touchStartX - touchEndX > threshold) {
+                // 左滑，显示下一张
+                nextSlide();
+            }
+        }
+        
+        // 开始自动轮播
+        startAutoSlide();
+    });
+</script>
+{% endblock %}

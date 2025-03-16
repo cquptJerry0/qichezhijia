@@ -1,0 +1,13 @@
+"""
+用户认证应用URL配置
+"""
+from django.urls import path
+from . import views
+
+app_name = 'user_auth'
+
+urlpatterns = [
+    path('register/', views.register_view, name='register'),
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
+] 

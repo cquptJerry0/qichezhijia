@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}我的收藏 - 汽车之家{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">我的收藏</h1>
+
+{% if cars %}
+<div class="row">
+    {% for car in cars %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <img src="{% static car.image %}" class="card-img-top" alt="{{ car.brand }} {{ car.model }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ car.brand }} {{ car.model }}</h5>
+                <p class="card-text">价格: ¥{{ car.price }}</p>
+                <a href="{% url 'vehicle:car_detail' car.slug %}" class="btn btn-primary">查看详情</a>
+                <button class="btn btn-outline-danger btn-sm mt-2 remove-favorite" data-id="{{ car.id }}">
+                    <i class="bi bi-x"></i> 取消收藏
+                </button>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info">
+    您还没有收藏任何车辆。
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // 取消收藏功能
+    document.addEventListener('DOMContentLoaded', function() {
+        const removeBtns = document.querySelectorAll('.remove-favorite');
+        removeBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const carId = this.dataset.id;
+                alert(`取消收藏功能将在未来版本中实现 (ID: ${carId})`);
+                this.closest('.col-md-4').remove();
+                
+                // 检查是否还有收藏的车辆
+                const remainingCars = document.querySelectorAll('.remove-favorite');
+                if (remainingCars.length === 0) {
+                    const row = document.querySelector('.row');
+                    row.innerHTML = '<div class="col-12"><div class="alert alert-info">您还没有收藏任何车辆。</div></div>';
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

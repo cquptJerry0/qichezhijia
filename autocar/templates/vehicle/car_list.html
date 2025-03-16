@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}车辆列表 - 汽车之家{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">车辆列表</h1>
+
+<!-- 搜索框 -->
+<div class="mb-4">
+    <div class="input-group">
+        <input type="text" id="searchInput" class="form-control" placeholder="搜索车辆品牌或型号...">
+        <button class="btn btn-primary" type="button" id="searchButton">搜索</button>
+    </div>
+</div>
+
+<!-- 车辆列表 -->
+<div class="row" id="carList">
+    {% for car in cars %}
+    <div class="col-md-4 mb-4 car-item" data-brand="{{ car.brand }}" data-model="{{ car.model }}">
+        <div class="card h-100">
+            <!-- 调试信息 -->
+            <div class="debug-info" style="display: none; background: #f8f9fa; padding: 10px; margin-bottom: 10px;">
+                <p>图片路径: {{ car.image }}</p>
+                <p>图片URL: {{ car.image_url }}</p>
+            </div>
+            <!-- 图片容器 -->
+            <div class="card-img-wrapper">
+                <img src="{% static car.image %}" class="card-img-top" alt="{{ car.brand }} {{ car.model }}" loading="lazy">
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">{{ car.brand }} {{ car.model }}</h5>
+                <p class="card-text">价格: ¥{{ car.price }}</p>
+                <a href="{% url 'vehicle:car_detail' car.slug %}" class="btn btn-primary">查看详情</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info">
+            暂无车辆信息
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* 图片容器样式 */
+    .card-img-wrapper {
+        height: 200px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f8f9fa;
+    }
+    
+    /* 确保图片在容器中正确显示 */
+    .card-img-top {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+    
+    /* 移动端适配 */
+    @media (max-width: 768px) {
+        .card-img-wrapper {
+            height: 180px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // 搜索功能
+    document.addEventListener("DOMContentLoaded", function() {
+        const searchInput = document.getElementById("searchInput");
+        const searchButton = document.getElementById("searchButton");
+        const carItems = document.querySelectorAll(".car-item");
+        
+        function performSearch() {
+            const searchTerm = searchInput.value.toLowerCase();
+            let hasResults = false;
+            
+            carItems.forEach(item => {
+                const brand = item.dataset.brand.toLowerCase();
+                const model = item.dataset.model.toLowerCase();
+                
+                if (brand.includes(searchTerm) || model.includes(searchTerm)) {
+                    item.style.display = "block";
+                    hasResults = true;
+                } else {
+                    item.style.display = "none";
+                }
+            });
+            
+            // 如果没有搜索结果，显示提示信息
+            const noResultsElement = document.getElementById("noResults");
+            if (!hasResults) {
+                if (!noResultsElement) {
+                    const div = document.createElement("div");
+                    div.id = "noResults";
+                    div.className = "col-12";
+                    div.innerHTML = "<div class=\"alert alert-warning\">没有找到匹配的车辆</div>";
+                    document.getElementById("carList").appendChild(div);
+                }
+            } else if (noResultsElement) {
+                noResultsElement.remove();
+            }
+        }
+        
+        searchButton.addEventListener("click", performSearch);
+        searchInput.addEventListener("keyup", function(event) {
+            if (event.key === "Enter") {
+                performSearch();
+            }
+        });
+    });
+</script>
+{% endblock %}
