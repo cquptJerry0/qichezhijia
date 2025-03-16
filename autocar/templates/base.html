@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}汽车之家{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{% static 'css/custom.css' %}">
     {% block extra_css %}{% endblock %}
 </head>
@@ -117,19 +118,91 @@
             const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
             
             navLinks.forEach(link => {
-                if (link.getAttribute('href') === currentPath) {
+                const href = link.getAttribute('href');
+                if (href === currentPath || (href !== '/' && currentPath.startsWith(href))) {
                     link.classList.add('active');
                 }
             });
             
-            // 警告框自动关闭
-            const alerts = document.querySelectorAll('.alert');
-            alerts.forEach(alert => {
-                setTimeout(() => {
-                    alert.classList.remove('show');
-                }, 5000);
+            // 收藏功能的点击处理
+            const favoriteBadges = document.querySelectorAll('.favorite-badge');
+            favoriteBadges.forEach(badge => {
+                badge.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const carItem = this.closest('.car-item');
+                    if (!carItem) return;
+                    
+                    const carId = carItem.getAttribute('data-id');
+                    if (!carId) return;
+                    
+                    // 发送AJAX请求
+                    fetch(`/vehicles/favorite/toggle/${carId}/`, {
+                        method: 'POST',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-CSRFToken': getCookie('csrftoken')
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        // 更新UI
+                        const icon = this.querySelector('i');
+                        if (data.is_favorite) {
+                            this.classList.add('favorited');
+                            icon.classList.remove('fa-heart-o');
+                            icon.classList.add('fa-heart');
+                        } else {
+                            this.classList.remove('favorited');
+                            icon.classList.remove('fa-heart');
+                            icon.classList.add('fa-heart-o');
+                        }
+                        
+                        // 显示消息
+                        showToast(data.message);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        showToast('操作失败，请稍后再试');
+                    });
+                });
             });
         });
+        
+        // 获取CSRF Token
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        
+        // 显示消息提示
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast-message';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => {
+                        document.body.removeChild(toast);
+                    }, 300);
+                }, 2000);
+            }, 100);
+        }
     </script>
     {% block extra_js %}{% endblock %}
 </body>

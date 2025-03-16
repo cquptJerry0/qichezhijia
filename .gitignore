@@ -56,7 +56,7 @@ static_collected/
 # IDE - Eclipse
 .project
 .pydevproject
-.settings/
+
 
 # 操作系统相关文件
 # Windows

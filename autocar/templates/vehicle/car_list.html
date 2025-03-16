@@ -17,7 +17,7 @@
 <!-- 车辆列表 -->
 <div class="row" id="carList">
     {% for car in cars %}
-    <div class="col-md-4 mb-4 car-item" data-brand="{{ car.brand }}" data-model="{{ car.model }}">
+    <div class="col-md-4 mb-4 car-item" data-brand="{{ car.brand }}" data-model="{{ car.model }}" data-id="{{ car.id }}">
         <div class="card h-100">
             <!-- 调试信息 -->
             <div class="debug-info" style="display: none; background: #f8f9fa; padding: 10px; margin-bottom: 10px;">
@@ -27,6 +27,11 @@
             <!-- 图片容器 -->
             <div class="card-img-wrapper">
                 <img src="{{ car.image_url }}" class="card-img-top" alt="{{ car.brand }} {{ car.model }}" loading="lazy">
+                {% if user.is_authenticated %}
+                <div class="favorite-badge {% if car.id in favorite_car_ids %}favorited{% endif %}" style="cursor: pointer;">
+                    <i class="fa {% if car.id in favorite_car_ids %}fa-heart{% else %}fa-heart-o{% endif %}"></i>
+                </div>
+                {% endif %}
             </div>
             <div class="card-body">
                 <h5 class="card-title">{{ car.brand }} {{ car.model }}</h5>
